@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import sobornov.event_log_service.model.Event
@@ -18,6 +20,11 @@ import sobornov.event_log_service.service.LogService
 class EventController(
     private val logService: LogService
 ) {
+
+    @GetMapping("/search")
+    @Operation(summary = "Search events by message")
+    fun search(@RequestParam query: String): ResponseEntity<List<Event>> =
+        ResponseEntity.ok(logService.search(query))
 
     @PostMapping
     @Operation(summary = "Create a new event")
